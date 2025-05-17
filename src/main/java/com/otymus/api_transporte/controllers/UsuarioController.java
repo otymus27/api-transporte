@@ -106,6 +106,7 @@ public class UsuarioController {
         }
     }
 
+    // Método para buscar o usuário logado
     @GetMapping("/logado")
     @Transactional
     @PreAuthorize("isAuthenticated()")
@@ -119,6 +120,12 @@ public class UsuarioController {
         }
     }
 
+    @GetMapping("/paginado/")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    public List<UsuarioDto> listarPaginado(@RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "5") int size) {
+        return usuarioService.listarPaginado(page, size);
+    }
 
 
 

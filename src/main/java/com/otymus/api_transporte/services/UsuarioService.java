@@ -8,6 +8,8 @@ import com.otymus.api_transporte.entities.Usuario.Usuario;
 import com.otymus.api_transporte.repositories.RoleRepository;
 import com.otymus.api_transporte.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -122,17 +124,6 @@ public class UsuarioService {
         return null;
     }
 
-
-
-
-    private UsuarioDto toDto(Usuario usuario) {
-        Set<RoleDto> roles = usuario.getRoles().stream()
-                .map(role -> new RoleDto(role.getId(), role.getNome()))
-                .collect(Collectors.toSet());
-
-        return new UsuarioDto(usuario.getId(), usuario.getLogin(), roles);
-    }
-
     public boolean excluir(Long id) {
         if (id == 1L) {
             return false; // Não permite exclusão do admin principal
@@ -167,6 +158,57 @@ public class UsuarioService {
 
         return null;
     }
+
+    public List<UsuarioDto> buscarPorNome(String nome) {
+        List<Usuario> usuarios = usuarioRepository.findByLoginContaining(nome);
+        if (!usuarios.isEmpty()) {
+            return usuarios.stream()
+                    .map(usuario -> {
+                        // Convertendo roles para DTOs, supondo que tenha RoleDto com id e nome
+                        Set<RoleDto> rolesDto = usuario.getRoles().stream()
+                                .map(role -> new RoleDto(role.getId(), role.getNome()))
+                                .collect(Collectors.toSet());
+
+                        return new UsuarioDto(
+                                usuario.getId(),
+                                usuario.getLogin(),
+                                rolesDto
+                        );
+                    })
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
+
+
+    private UsuarioDto toDto(Usuario usuario) {
+        Set<RoleDto> roles = usuario.getRoles().stream()
+                .map(role -> new RoleDto(role.getId(), role.getNome()))
+                .collect(Collectors.toSet());
+
+        return new UsuarioDto(usuario.getId(), usuario.getLogin(), roles);
+    }
+
+    public List<UsuarioDto> listarPaginado(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return usuarioRepository.findAll(pageable)
+                .stream()
+                .map(u -> {
+                    Set<RoleDto> rolesDto = u.getRoles().stream()
+                            .map(role -> new RoleDto(role.getId(), role.getNome()))
+                            .collect(Collectors.toSet());
+
+                    return new UsuarioDto(
+                            u.getId(),
+                            u.getLogin(),
+                            rolesDto
+                    );
+                })
+                .collect(Collectors.toList());
+    }
+
+
 
 
 }
