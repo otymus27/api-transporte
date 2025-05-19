@@ -2,6 +2,7 @@ package com.otymus.api_transporte.entities.Solicitacao.Dto;
 
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 // Usado para listagem e visualização (GET)
 public record SolicitacaoResponseDto(
@@ -16,5 +17,9 @@ public record SolicitacaoResponseDto(
         Long idSetor,
         String nomeSetor,
         Long idUsuario,
-        String nomeUsuario
+        String nomeUsuario,
+        Integer kmInicial,
+        Integer kmFinal,
+        LocalTime horaSaida,
+        LocalTime horaChegada
 ) {}

@@ -74,6 +74,12 @@ public class SolicitacaoService {
         solicitacao.setSetor(setor);
         solicitacao.setUsuario(usuario);
 
+        // Setar demais campos que não tem relacionamentos
+        solicitacao.setHoraSaida(dto.horaSaida());
+        solicitacao.setKmInicial(dto.kmInicial());
+        solicitacao.setHoraChegada(dto.horaChegada());
+        solicitacao.setKmFinal(dto.kmFinal());
+
         solicitacaoRepository.save(solicitacao);
 
         return new SolicitacaoDto(
@@ -84,7 +90,11 @@ public class SolicitacaoService {
                 solicitacao.getCarro(),
                 solicitacao.getMotorista(),
                 solicitacao.getUsuario(),
-                solicitacao.getSetor()
+                solicitacao.getSetor(),
+                solicitacao.getKmInicial(),
+                solicitacao.getKmFinal(),
+                solicitacao.getHoraSaida(),
+                solicitacao.getHoraChegada()
         );
     }
 
@@ -107,7 +117,11 @@ public class SolicitacaoService {
                     solicitacao.getCarro(),
                     solicitacao.getMotorista(),
                     solicitacao.getUsuario(),
-                    solicitacao.getSetor()
+                    solicitacao.getSetor(),
+                    solicitacao.getKmInicial(),
+                    solicitacao.getKmFinal(),
+                    solicitacao.getHoraSaida(),
+                    solicitacao.getHoraChegada()
             );
         }
         return null;
@@ -142,6 +156,12 @@ public class SolicitacaoService {
         solicitacao.setSetor(setor);
         solicitacao.setUsuario(usuario); // Atualiza o usuário responsável pela alteração
 
+        // Setar demais campos que não tem relacionamentos
+        solicitacao.setHoraSaida(dto.horaSaida());
+        solicitacao.setKmInicial(dto.kmInicial());
+        solicitacao.setHoraChegada(dto.horaChegada());
+        solicitacao.setKmFinal(dto.kmFinal());
+
         solicitacaoRepository.save(solicitacao);
 
         return new SolicitacaoDto(
@@ -152,7 +172,11 @@ public class SolicitacaoService {
                 solicitacao.getCarro(),
                 solicitacao.getMotorista(),
                 solicitacao.getUsuario(),
-                solicitacao.getSetor()
+                solicitacao.getSetor(),
+                solicitacao.getKmInicial(),
+                solicitacao.getKmFinal(),
+                solicitacao.getHoraSaida(),
+                solicitacao.getHoraChegada()
         );
     }
 
@@ -177,7 +201,11 @@ public class SolicitacaoService {
                         s.getCarro(),
                         s.getMotorista(),
                         s.getUsuario(),
-                        s.getSetor()
+                        s.getSetor(),
+                        s.getKmInicial(),
+                        s.getKmFinal(),
+                        s.getHoraSaida(),
+                        s.getHoraChegada()
                 ))
                 .collect(Collectors.toList());
     }
@@ -191,7 +219,11 @@ public class SolicitacaoService {
                 solicitacao.getCarro(),
                 solicitacao.getMotorista(),
                 solicitacao.getUsuario(),
-                solicitacao.getSetor()
+                solicitacao.getSetor(),
+                solicitacao.getKmInicial(),
+                solicitacao.getKmFinal(),
+                solicitacao.getHoraSaida(),
+                solicitacao.getHoraChegada()
         );
     }
 
@@ -216,7 +248,11 @@ public class SolicitacaoService {
                 s.getSetor().getId(),
                 s.getSetor().getNome(),
                 s.getUsuario().getId(),
-                s.getUsuario().getLogin()
+                s.getUsuario().getLogin(),
+                s.getKmInicial(),
+                s.getKmFinal(),
+                s.getHoraSaida(),
+                s.getHoraChegada()
         );
     }
 

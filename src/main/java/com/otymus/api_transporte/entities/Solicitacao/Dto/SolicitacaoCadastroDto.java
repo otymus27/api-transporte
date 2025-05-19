@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public record SolicitacaoCadastroDto(
         @NotNull(message = "A data da solicitação é obrigatória")
@@ -22,6 +23,17 @@ public record SolicitacaoCadastroDto(
         Long idMotorista,
 
         @NotNull(message = "O setor é obrigatório")
-        Long idSetor
+        Long idSetor,
+
+        @NotNull(message = "O setor é obrigatório")
+        Integer kmInicial,
+        @NotNull(message = "O setor é obrigatório")
+        Integer kmFinal,
+        @NotNull(message = "O setor é obrigatório")
+        LocalTime horaSaida,
+        @NotNull(message = "O setor é obrigatório")
+        LocalTime horaChegada
+
+
 ) {}
 

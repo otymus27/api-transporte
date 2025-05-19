@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "tb_solicitacao")
@@ -47,5 +48,17 @@ public class Solicitacao {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_setor", nullable = false)
     private Setor setor;
+
+    @Column(name = "km_inicial")
+    private Integer kmInicial;
+
+    @Column(name = "km_final")
+    private Integer kmFinal;
+
+    @Column(name = "hora_saida")
+    private LocalTime horaSaida;
+
+    @Column(name = "hora_chegada")
+    private LocalTime horaChegada;
 
 }
