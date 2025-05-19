@@ -25,7 +25,7 @@ public class Setor {
     private String nome;
 
     //Relacionamento com Solicitação - um setor pode ter várias solicitações
-    //@OneToMany(mappedBy = "setor")
-    //private List<Solicitacao> solicitacoes;
+    @OneToMany(mappedBy = "setor")
+    private List<Solicitacao> solicitacoes;
 
 }

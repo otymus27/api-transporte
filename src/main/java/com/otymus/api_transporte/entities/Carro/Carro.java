@@ -2,9 +2,12 @@ package com.otymus.api_transporte.entities.Carro;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.otymus.api_transporte.entities.Solicitacao.Solicitacao;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 @Entity
 @Table(name = "tb_carro")
@@ -28,6 +31,6 @@ public class Carro {
     private String placa;
 
     //Relacionamento com Solicitacao - um carro pode estar vinculado a várias solicitações
-    //@OneToMany(mappedBy = "carro")
-    //private List<Solicitacao> solicitacoes;
+    @OneToMany(mappedBy = "carro")
+    private List<Solicitacao> solicitacoes;
 }

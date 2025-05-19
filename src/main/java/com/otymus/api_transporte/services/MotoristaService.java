@@ -36,7 +36,7 @@ public class MotoristaService {
 
     public List<MotoristaDto> listar() {
         return motoristaRepository.findAll().stream()
-                .map(m -> new MotoristaDto(m.getId(), m.getNome(), m.getMatricula(), m.getTelefone()))
+                .map(m -> new MotoristaDto(m.getId(), m.getMatricula(), m.getNome(), m.getTelefone()))
                 .collect(Collectors.toList());
     }
 
