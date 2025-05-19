@@ -16,7 +16,6 @@ import java.time.LocalDate;
 @Table(name = "tb_solicitacao")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Solicitacao {
 
     @EqualsAndHashCode.Include
@@ -33,19 +32,19 @@ public class Solicitacao {
     @Column(nullable = false)
     private String status; // PENDENTE, APROVADA, RECUSADA
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_carro", nullable = false)
     private Carro carro;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_motorista", nullable = false)
     private Motorista motorista;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_setor", nullable = false)
     private Setor setor;
 

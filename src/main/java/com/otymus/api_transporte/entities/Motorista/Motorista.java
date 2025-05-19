@@ -1,6 +1,7 @@
 package com.otymus.api_transporte.entities.Motorista;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.otymus.api_transporte.entities.Solicitacao.Solicitacao;
 import jakarta.persistence.*;
@@ -13,7 +14,6 @@ import java.util.List;
 @Table(name = "tb_motorista")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Motorista {
 
     @EqualsAndHashCode.Include
@@ -32,5 +32,6 @@ public class Motorista {
 
     //Relacionamento com Solicitacao - um motorista pode estar vinculado a várias solicitações
     @OneToMany(mappedBy = "motorista")
+    @JsonIgnore
     private List<Solicitacao> solicitacoes;
 }

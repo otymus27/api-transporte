@@ -5,6 +5,7 @@ import com.otymus.api_transporte.entities.Motorista.Motorista;
 import com.otymus.api_transporte.entities.Setor.Setor;
 import com.otymus.api_transporte.entities.Solicitacao.Dto.SolicitacaoCadastroDto;
 import com.otymus.api_transporte.entities.Solicitacao.Dto.SolicitacaoDto;
+import com.otymus.api_transporte.entities.Solicitacao.Dto.SolicitacaoResponseDto;
 import com.otymus.api_transporte.entities.Solicitacao.Solicitacao;
 import com.otymus.api_transporte.entities.Usuario.Usuario;
 import com.otymus.api_transporte.repositories.*;
@@ -90,16 +91,7 @@ public class SolicitacaoService {
 
     public List<SolicitacaoDto> listar() {
         return solicitacaoRepository.findAll().stream()
-                .map(s -> new SolicitacaoDto(
-                        s.getId(),
-                        s.getDataSolicitacao(),
-                        s.getDestino(),
-                        s.getStatus(),
-                        s.getCarro(),
-                        s.getMotorista(),
-                        s.getUsuario(),
-                        s.getSetor()
-                ))
+                .map(this::convertToSolicitacaoDto) // Using a method reference for cleaner code
                 .collect(Collectors.toList());
     }
 
@@ -189,5 +181,45 @@ public class SolicitacaoService {
                 ))
                 .collect(Collectors.toList());
     }
+
+    private SolicitacaoDto convertToSolicitacaoDto(Solicitacao solicitacao) {
+        return new SolicitacaoDto(
+                solicitacao.getId(),
+                solicitacao.getDataSolicitacao(),
+                solicitacao.getDestino(),
+                solicitacao.getStatus(),
+                solicitacao.getCarro(),
+                solicitacao.getMotorista(),
+                solicitacao.getUsuario(),
+                solicitacao.getSetor()
+        );
+    }
+
+
+
+
+    //----------------------
+    public List<SolicitacaoResponseDto> listarTodos() {
+        return solicitacaoRepository.findAll().stream().map(this::toResponseDto).toList();
+    }
+
+    private SolicitacaoResponseDto toResponseDto(Solicitacao s) {
+        return new SolicitacaoResponseDto(
+                s.getId(),
+                s.getDataSolicitacao(),
+                s.getDestino(),
+                s.getStatus(),
+                s.getCarro().getId(),
+                s.getCarro().getPlaca(),
+                s.getMotorista().getId(),
+                s.getMotorista().getNome(),
+                s.getSetor().getId(),
+                s.getSetor().getNome(),
+                s.getUsuario().getId(),
+                s.getUsuario().getLogin()
+        );
+    }
+
+
 
 }

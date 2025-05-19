@@ -2,6 +2,7 @@ package com.otymus.api_transporte.controllers;
 
 import com.otymus.api_transporte.entities.Solicitacao.Dto.SolicitacaoCadastroDto;
 import com.otymus.api_transporte.entities.Solicitacao.Dto.SolicitacaoDto;
+import com.otymus.api_transporte.entities.Solicitacao.Dto.SolicitacaoResponseDto;
 import com.otymus.api_transporte.exceptions.ErrorMessage;
 import com.otymus.api_transporte.services.SolicitacaoService;
 import jakarta.transaction.Transactional;
@@ -40,9 +41,8 @@ public class SolicitacaoController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
-    public ResponseEntity<List<SolicitacaoDto>> listar() {
-        List<SolicitacaoDto> lista = solicitacaoService.listar();
-        return ResponseEntity.ok(lista);
+    public ResponseEntity<List<SolicitacaoResponseDto>> listar() {
+        return ResponseEntity.ok(solicitacaoService.listarTodos());
     }
 
     @GetMapping("/{id}")
