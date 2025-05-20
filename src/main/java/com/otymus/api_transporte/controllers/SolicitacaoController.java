@@ -32,7 +32,8 @@ public class SolicitacaoController {
 
     @PostMapping
     @Transactional
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Todos pode CADASTRAR
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE','SCOPE_BASIC')")
     public ResponseEntity<Object> cadastrar(@RequestBody SolicitacaoCadastroDto dto) {
         logger.info("Recebendo dados para cadastro de solicitação: {}", dto);
         SolicitacaoDto resposta = solicitacaoService.cadastrar(dto);
@@ -40,13 +41,15 @@ public class SolicitacaoController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Todos pode listar
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE','SCOPE_BASIC')")
     public ResponseEntity<List<SolicitacaoResponseDto>> listar() {
         return ResponseEntity.ok(solicitacaoService.listarTodos());
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Todos pode listar por id
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE','SCOPE_BASIC')")
     public ResponseEntity<Object> buscarPorId(@PathVariable Long id) {
         SolicitacaoDto dto = solicitacaoService.buscarPorId(id);
         if (dto != null) {
@@ -58,7 +61,8 @@ public class SolicitacaoController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Apenas ADMIN e GERENTE pode EXCLUIR
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE')")
     public ResponseEntity<?> excluir(@PathVariable Long id) {
         logger.info("Tentando excluir solicitação com ID: {}", id);
         boolean excluido = solicitacaoService.excluir(id);
@@ -72,7 +76,8 @@ public class SolicitacaoController {
 
     @PutMapping("/{id}")
     @Transactional
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Todos pode atualizar
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE','SCOPE_BASIC')")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody SolicitacaoCadastroDto dto) {
         logger.info("Atualizando solicitação com ID: {} e dados: {}", id, dto);
         SolicitacaoDto resposta = solicitacaoService.atualizar(id, dto);
@@ -84,7 +89,8 @@ public class SolicitacaoController {
     }
 
     @GetMapping("/paginado/")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Todos pode atualizar
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE','SCOPE_BASIC')")
     public List<SolicitacaoDto> listarPaginado(@RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "5") int size) {
         return solicitacaoService.listarPaginado(page, size);

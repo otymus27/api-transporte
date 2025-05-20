@@ -30,6 +30,7 @@ public class UsuarioController {
 
     @PostMapping()
     @Transactional
+    // Apenas ADMIN pode cadastrar usuários
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Object> cadastrar(@RequestBody UsuarioCadastroDto dados) {
         logger.info("Cadastrando novo usuário: {}", dados.login());
@@ -44,7 +45,8 @@ public class UsuarioController {
 
     @GetMapping
     @Transactional
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Apenas ADMIN e GERENTE pode listar usuários
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE')")
     public ResponseEntity<List<UsuarioDto>> listar() {
         List<UsuarioDto> usuarios = usuarioService.listar();
         return ResponseEntity.ok(usuarios);
@@ -53,7 +55,8 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     @Transactional
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Apenas ADMIN e GERENTE pode listar usuários por id
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE')")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
         UsuarioDto usuario = usuarioService.buscarPorId(id);
         if (usuario != null) {
@@ -66,6 +69,7 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     @Transactional
+    // Apenas ADMIN pode atualizar usuários
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody UsuarioCadastroDto dto) {
         logger.info("Atualizando usuário com ID: {}", id);
@@ -86,6 +90,7 @@ public class UsuarioController {
 
     @DeleteMapping("/{id}")
     @Transactional
+    // Apenas ADMIN pode excluir usuários
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<?> excluir(@PathVariable Long id) {
         logger.info("Tentativa de exclusão do usuário com ID: {}", id);
@@ -119,7 +124,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/paginado/")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE')")
     public List<UsuarioDto> listarPaginado(@RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "5") int size) {
         return usuarioService.listarPaginado(page, size);

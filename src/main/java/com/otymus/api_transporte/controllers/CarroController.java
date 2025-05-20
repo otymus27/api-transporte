@@ -40,7 +40,8 @@ public class CarroController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Todos pode listar
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE','SCOPE_BASIC')")
     public ResponseEntity<List<CarroDto>> listar() {
         List<CarroDto> lista = carroService.listar();
         return ResponseEntity.ok(lista);

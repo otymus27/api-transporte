@@ -38,7 +38,8 @@ public class SetorController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Todos pode listar
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE','SCOPE_BASIC')")
     public ResponseEntity<List<SetorDto>> listar() {
         List<SetorDto> lista = setorService.listar();
         return ResponseEntity.ok(lista);
