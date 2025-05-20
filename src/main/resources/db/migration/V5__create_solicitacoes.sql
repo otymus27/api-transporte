@@ -20,9 +20,9 @@ CREATE TABLE tb_solicitacao (
 
 -- Inserção de 5 registros iniciais
 INSERT INTO tb_solicitacao (data_solicitacao, destino, status, km_inicial, km_final, hora_saida, hora_chegada, id_carro, id_motorista, id_usuario, id_setor) VALUES
-     ('2025-05-01', 'HRG', 'PENDENTE', NULL, NULL, NULL, NULL, 1, 1, 1, 1),
-     ('2025-05-02', 'HRT', 'APROVADA', NULL, NULL, NULL, NULL, 2, 2, 2, 2),
-     ('2025-05-03', 'HRS', 'RECUSADA', NULL, NULL, NULL, NULL, 3, 3, 3, 3),
-     ('2025-05-04', 'HRT', 'PENDENTE', NULL, NULL, NULL, NULL, 4, 4, 4, 4),
-     ('2025-05-05', 'HBDF', 'APROVADA', NULL, NULL, NULL, NULL, 5, 5, 5, 5);
+     ('2025-05-01', 'HRG', 'PENDENTE', 1, 5, NULL, NULL, 1, 1, 1, 1),
+     ('2025-05-02', 'HRT', 'CONCLUIDA', 1, 5, NULL, NULL, 2, 2, 2, 2),
+     ('2025-05-03', 'HRS', 'RECUSADA', 1, 5, NULL, NULL, 3, 3, 3, 3),
+     ('2025-05-04', 'HRT', 'PENDENTE', 1, 5, NULL, NULL, 4, 4, 4, 4),
+     ('2025-05-05', 'HBDF', 'CONCLUIDA', 1, 5, NULL, NULL, 5, 5, 5, 5);
 

@@ -17,4 +17,7 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
 
     @Override
     Page<Solicitacao> findAll(Pageable pageable);
+
+    // Faz busca das 5 ultimas solicitacoes
+    List<Solicitacao> findTop5ByOrderByDataSolicitacaoDesc();
 }
