@@ -1,0 +1,44 @@
+services:
+    mysql:
+        image: mysql:8.0
+        container_name: mysql_transporte
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: db_transporte
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+        ports:
+            - "3306:3306"
+        volumes:
+            - mysql-data:/var/lib/mysql
+
+    backend:
+        build:
+            context: ./api-transporte
+            dockerfile: Dockerfile
+        container_name: api_transporte
+        restart: on-failure
+        environment:
+            SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_transporte?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+            SPRING_DATASOURCE_USERNAME: root
+            SPRING_DATASOURCE_PASSWORD: root
+            SPRING_JPA_HIBERNATE_DDL_AUTO: update
+        depends_on:
+            - mysql
+        ports:
+            - "8080:8080"
+
+    frontend:
+        build:
+            context: ./app-transporte
+            dockerfile: Dockerfile
+        container_name: app_transporte
+        restart: on-failure
+        ports:
+            - "3000:3000"
+        depends_on:
+            - backend
+
+volumes:
+    mysql-data:
