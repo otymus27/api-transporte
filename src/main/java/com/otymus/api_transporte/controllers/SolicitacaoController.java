@@ -89,7 +89,7 @@ public class SolicitacaoController {
     }
 
     @GetMapping("/paginado/")
-    // Todos pode atualizar
+    // Todos podem listar
     @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE','SCOPE_BASIC')")
     public List<SolicitacaoDto> listarPaginado(@RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "5") int size) {

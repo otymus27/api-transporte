@@ -3,6 +3,7 @@ package com.otymus.api_transporte.exceptions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
@@ -24,15 +25,42 @@ import java.util.Map;
 @ControllerAdvice
 public class ApiExceptionHandler implements AuthenticationEntryPoint {
 
-//    @ResponseBody
-//    @ExceptionHandler(RemedioNaoEncontradoException.class)
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    public Map<String, String> handleRemedioNaoEncontrado(RemedioNaoEncontradoException ex) {
-//        Map<String, String> error = new HashMap<>();
-//        error.put("erro", "Recurso não encontrado");
-//        error.put("mensagem", ex.getMessage());
-//        return error;
-//    }
+    // Método para tratar erro de chave duplicada
+    @ResponseBody
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Map<String, String> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("erro", "Violação de integridade");
+
+        String message = ex.getRootCause() != null ? ex.getRootCause().getMessage() : ex.getMessage();
+
+        if (message != null && message.toLowerCase().contains("duplicate entry")) {
+            String campo = "campo";
+            try {
+                int keyIndex = message.toLowerCase().indexOf("for key");
+                if (keyIndex != -1) {
+                    String key = message.substring(keyIndex).replace("for key", "").replace("'", "").trim(); // ex: tb_carro.placa
+                    if (key.contains(".")) {
+                        campo = key.split("\\.")[1]; // pega apenas "placa"
+                    } else {
+                        campo = key;
+                    }
+                }
+            } catch (Exception e) {
+                campo = "desconhecido";
+            }
+
+            error.put("campo", campo);
+            error.put("mensagem", "Valor duplicado para o campo '" + campo + "'.");
+        } else {
+            error.put("mensagem", "Operação não permitida: o recurso está em uso ou viola uma restrição.");
+        }
+
+        return error;
+    }
+
+
 
     @ResponseBody
     @ExceptionHandler(DadosInvalidosException.class)

@@ -46,7 +46,8 @@ public class SetorController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Todos podem buscar por id
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE','SCOPE_BASIC')")
     public ResponseEntity<Object> buscarPorId(@PathVariable Long id) {
         SetorDto dto = setorService.buscarPorId(id);
         if (dto != null) {
@@ -72,7 +73,8 @@ public class SetorController {
 
     @PutMapping("/{id}")
     @Transactional
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Somente ADMIN e GERENTE pode atualizar
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE')")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody SetorCadastroDto dto) {
         logger.info("Atualizando setor com ID: {} e dados: {}", id, dto);
         SetorDto resposta = setorService.atualizar(id, dto);
@@ -84,7 +86,8 @@ public class SetorController {
     }
 
     @GetMapping("/buscarPorNome")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Todos podem buscar por nome
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE','SCOPE_BASIC')")
     public ResponseEntity<Object> buscarPorNome(@RequestParam String nome) {
         List<SetorDto> lista = setorService.buscarPorNome(nome);
         if (lista != null && !lista.isEmpty()) {
@@ -96,7 +99,8 @@ public class SetorController {
     }
 
     @GetMapping("/paginado/")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Todos podem listar
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE','SCOPE_BASIC')")
     public List<SetorDto> listarPaginado(@RequestParam(defaultValue = "0") int page,
                                          @RequestParam(defaultValue = "5") int size) {
         return setorService.listarPaginado(page, size);

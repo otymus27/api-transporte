@@ -48,7 +48,8 @@ public class CarroController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Todos podem buscar por id
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE','SCOPE_BASIC')")
     public ResponseEntity<Object> buscarPorId(@PathVariable Long id) {
         CarroDto dto = carroService.buscarPorId(id);
         if (dto != null) {
@@ -74,7 +75,8 @@ public class CarroController {
 
     @PutMapping("/{id}")
     @Transactional
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Somente ADMIN e GERENTE pode atualizar
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE')")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody CarroCadastroDto dto) {
         logger.info("Atualizando carro com ID: {} e dados: {}", id, dto);
         CarroDto resposta = carroService.atualizar(id, dto);
@@ -86,7 +88,8 @@ public class CarroController {
     }
 
     @GetMapping("/buscarPorPlaca")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Todos podem buscar
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE','SCOPE_BASIC')")
     public ResponseEntity<?> buscarPorPlaca(@RequestParam String placa) {
         logger.info("Buscando carros com placa contendo: {}", placa);
         List<CarroDto> carros = carroService.buscarPorPlaca(placa);
@@ -100,7 +103,8 @@ public class CarroController {
     }
 
     @GetMapping("/paginado/")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    // Todos podem listar
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_GERENTE','SCOPE_BASIC')")
     public List<CarroDto> listarPaginado(@RequestParam(defaultValue = "0") int page,
                                          @RequestParam(defaultValue = "5") int size) {
         return carroService.listarPaginado(page, size);
